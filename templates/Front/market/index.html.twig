@@ -1,0 +1,56 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Market index{% endblock %}
+
+{% block body %}
+   
+    <h1>Market index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IDmarket</th>
+                <th>Name</th>
+                <th>Rate</th>
+                <th>Sprice</th>
+                <th>Bprice</th>
+                <th>Mcap</th>
+                <th>TypeM</th>
+                <th>IMG_SRC</th>
+                <th>ID_user</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for market in markets %}
+            <tr>
+                <td>{{ market.IDmarket }}</td>
+                <td>{{ market.name }}</td>
+                <td>{{ market.rate }}</td>
+                <td>{{ market.Sprice }}</td>
+                <td>{{ market.Bprice }}</td>
+                <td>{{ market.Mcap }}</td>
+                <td>{{ market.typeM }}</td>
+                <td style="width: 160px;">{{ market.IMGSRC }}</td>
+                <td>{{ market.IDUser }}</td>
+                <td>
+                    <a href="{{ path('app_market_show', {'id': market.IDmarket}) }}">show</a>
+                    <a href="{{ path('app_market_edit', {'id': market.IDmarket}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_market_new') }}">Create new</a>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

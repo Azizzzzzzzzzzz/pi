@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ market.id }}</td>
-            </tr>
-            <tr>
                 <th>IDmarket</th>
                 <td>{{ market.IDmarket }}</td>
             </tr>
@@ -52,7 +48,7 @@
 
     <a href="{{ path('app_market_index') }}">back to list</a>
 
-    <a href="{{ path('app_market_edit', {'id': market.id}) }}">edit</a>
+    <a href="{{ path('app_market_edit', {'id': market.IDmarket}) }}">edit</a>
 
-    {{ include('market/_delete_form.html.twig') }}
+    {{ include('Back/market/_delete_form.html.twig') }}
 {% endblock %}

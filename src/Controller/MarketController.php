@@ -6,6 +6,7 @@ use App\Entity\Market;
 use App\Form\MarketType;
 use App\Repository\MarketRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/market')]
 class MarketController extends AbstractController
 {
+    private int $is_admin=0; 
     #[Route('/', name: 'app_market_index', methods: ['GET'])]
     public function index(MarketRepository $marketRepository): Response
-    {
-        return $this->render('Front/market/index.html.twig', [
+    {   if ($this->is_admin==1)
+        $route = "Back/market/index.html.twig"; 
+        else
+        $route = "Front/market/index.html.twig";
+        return $this->render($route, [
             'markets' => $marketRepository->findAll(),
         ]);
     }
@@ -25,8 +30,12 @@ class MarketController extends AbstractController
     #[Route('/new', name: 'app_market_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $market = new Market();
+
         $form = $this->createForm(MarketType::class, $market);
+        $market->getName() ; 
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -36,7 +45,7 @@ class MarketController extends AbstractController
             return $this->redirectToRoute('app_market_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('Front/market/new.html.twig', [
+        return $this->renderForm('Back/market/new.html.twig', [
             'market' => $market,
             'form' => $form,
         ]);
@@ -45,7 +54,7 @@ class MarketController extends AbstractController
     #[Route('/{id}', name: 'app_market_show', methods: ['GET'])]
     public function show(Market $market): Response
     {
-        return $this->render('Front/market/show.html.twig', [
+        return $this->render('Back/market/show.html.twig', [
             'market' => $market,
         ]);
     }
@@ -62,20 +71,20 @@ class MarketController extends AbstractController
             return $this->redirectToRoute('app_market_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('Front/market/edit.html.twig', [
+        return $this->renderForm('Back/market/edit.html.twig', [
             'market' => $market,
             'form' => $form,
         ]);
     }
 
-    // #[Route('/{id}', name: 'app_market_delete', methods: ['POST'])]
-    // public function delete(Request $request, Market $market, EntityManagerInterface $entityManager): Response
-    // {
-    //     if ($this->isCsrfTokenValid('delete'.$market->getId(), $request->request->get('_token'))) {
-    //         $entityManager->remove($market);
-    //         $entityManager->flush();
-    //     }
+     #[Route('/{id}', name: 'app_market_delete', methods: ['POST'])]
+     public function delete(Request $request, Market $market, EntityManagerInterface $entityManager): Response
+     {
+         if ($this->isCsrfTokenValid('delete'.$market->getIDmarket(), $request->request->get('_token'))) {
+             $entityManager->remove($market);
+             $entityManager->flush();
+         }
 
-    //     return $this->redirectToRoute('app_market_index', [], Response::HTTP_SEE_OTHER);
-    // }
+         return $this->redirectToRoute('app_market_index', [], Response::HTTP_SEE_OTHER);
+     }
 }

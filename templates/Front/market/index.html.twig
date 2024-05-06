@@ -72,6 +72,7 @@
                     <td class="market-data">{{ market.Bprice }}</td>
                     <td class="market-data">{{ market.Mcap }}</td>
                     <td>
+                        <a href="{{ path('app_payment_new', {'id': market.IDmarket}) }}" class="btn btn-success animate__animated animate__pulse animate__infinite">buy</a>
                         <a href="{{ path('app_market_show', {'id': market.IDmarket}) }}" class="btn btn-info animate__animated animate__pulse animate__infinite">show</a>
                         <a href="{{ path('app_market_edit', {'id': market.IDmarket}) }}" class="btn btn-warning animate__animated animate__pulse animate__infinite">edit</a>
                     </td>
